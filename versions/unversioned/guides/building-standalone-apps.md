@@ -86,7 +86,7 @@ Next we will ask you if you'd like us to handle your distribution certificate or
 
 ## 4. Wait for it to finish building
 
-This will take a few minutes, you can check up on it by running `exp build:status`. When it's done, you'll see the url of a `.apk` (Android) or `.ipa` (iOS) file -- this is your app.
+This will take a few minutes, you can check up on it by running `exp build:status`. When it's done, you'll see the url of a `.apk` (Android) or `.ipa` (iOS) file -- this is your app. Copy and paste the link into your browser to download the file.
 
 > **Note:** We enable bitcode for iOS, so the `.ipa` files for iOS are much larger than the eventual App Store download available to your users. For more information, see [App Thinning](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html).
 
@@ -98,7 +98,9 @@ This will take a few minutes, you can check up on it by running `exp build:statu
 
 ## 5.5 - Uploading your iOS IPA to TestFlight
 
-- Once your IPA is ready, copy and paste the link in your browser to download it. From here, you will need to use Application Loader or Xcode to upload your build.
+- Once your IPA is ready and you've downloaded the file locally, you are ready to upload your app to TestFlight. Within TestFlight, click the plus icon and create a New App. Make sure your `bundleIdentifier` matches what you've placed in `exp.json`.
+
+> **Note:** You will not see your build here just yet! You will need to use Xcode or AppLoader to upload your IPA first. Once you do that, you can check the status of your build under `Activity`. Processing an app can take 10-15 minutes before it shows up under available builds.
 
 ## 6. Submit it to the appropriate store
 
