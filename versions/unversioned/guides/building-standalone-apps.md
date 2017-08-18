@@ -40,6 +40,9 @@ You're probably not surprised that `name`, `icon` and `version` are required, bu
 
 There are other options you might want to add to `app.json`. We have only covered what is required. For example, some people like to configure their own build number, linking scheme, and more. We highly recommend you read through [Configuration with app.json](configuration.html) for the full spec.
 
+> **Note**: iOS standalone apps [default](https://developer.apple.com/documentation/uikit/uibarstyle/uibarstyledefault) the status bar text color to white. But when developing within the Expo app, the default is black since the Expo app itself has a black status bar. Users are often surprised that their standalone apps suddenly have white status bars. In order to keep it black, you'll need to use a `<StatusBar barStyle="dark-content" />` component. See [StatusBar docs](https://facebook.github.io/react-native/docs/statusbar.html) for more information.
+
+
 ## 3. Start the build
 
 -   Run `exp start` in your app directory to boot up the Expo packager. This is necessary because during the build process your app will be republished to ensure it is the latest version.
@@ -91,7 +94,7 @@ This will take a few minutes, you can check up on it by running `exp build:statu
 
 -   You can drag and drop the `.apk` into your Android emulator. This is the easiest way to test out that the build was successful. But it's not the most satisfying.
 -   **To run it on your Android device**, make sure you have the Android platform tools installed along with `adb`, then just run `adb install app-filename.apk` with your device plugged in.
--   **To run it on your iOS device**, you will need to put in a bit more work :( We are working on producing simulator builds to make it easier to test, but for now you will need to use Apple TestFlight. Go to iTunes connect and create a new app and pick your bundle identifier. After that, I recommend using [pilot](https://github.com/fastlane/fastlane/tree/master/pilot) to upload the build and add testers.
+-   **To run it on your iOS Simulator**, first build your expo project with the simulator flag by running `exp build:ios -t simulator`, then download the tarball with the link given upon completion when running `exp build:status`. Unpack the tar.gz by running `tar -xvzf your-app.tar.gz`. Then you can run it by starting an iOS Simulator instance, then running `xcrun simctl install booted <app path>` and `xcrun simctl launch booted <app identifier>`. Another alternative which some people prefer is to install the [ios-sim](https://github.com/phonegap/ios-sim) tool and then use `ios-sim launch <app path>`.
 
 ## 5.5 - Uploading your iOS IPA to TestFlight
 
@@ -111,7 +114,7 @@ If you plan to submit to the Apple App Store, your app will be subject to normal
 
 ## 7. Update your app
 
-For the most part, when you want to update your app, just Publish again from exp or XDE. Your users will get the new JS the next time they open the app. There are only a couple reasons why you might want to rebuild and resubmit the native binaries:
+For the most part, when you want to update your app, just Publish again from exp or XDE. Your users will download the new JS the next time they open the app. There are only a couple reasons why you might want to rebuild and resubmit the native binaries:
 
 - If you want to change native metadata like the app's name or icon
 - If you upgrade to a newer `sdkVersion` of your app (which requires new native code)
@@ -119,3 +122,10 @@ For the most part, when you want to update your app, just Publish again from exp
 To keep track of this, you can also update the binary's [versionCode](configuration.html#versioncode) and [buildNumber](configuration.html#buildnumber). It is a good idea to glance through the [app.json documentation](configuration.html) to get an idea of all the properties you can change, e.g. the icons, deep linking url scheme, handset/tablet support, and a lot more.
 
 If you run into problems during this process, we're more than happy to help out! Join our Slack and let us know if you have any questions.
+
+> **Note:** Updates are handled differently on iOS and Android. On Android, updates
+are downloaded in the background. This means that the first time a user opens
+your app after an update they will get the old version while the new version
+is downloaded in the background. The second time they open the app they'll get
+the new version. On iOS, updates are downloaded synchronously, so users will
+get the new version the first time they open your app after an update.

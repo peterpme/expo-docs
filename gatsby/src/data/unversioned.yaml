@@ -62,6 +62,7 @@
     BarCodeScanner: /versions/unversioned/sdk/bar-code-scanner.html
     BlurView: /versions/unversioned/sdk/blur-view.html
     Branch: /versions/unversioned/sdk/branch.html
+    Camera: /versions/unversioned/sdk/camera.html
     Constants: /versions/unversioned/sdk/constants.html
     Contacts: /versions/unversioned/sdk/contacts.html
     DocumentPicker: /versions/unversioned/sdk/document-picker.html
@@ -80,12 +81,15 @@
     LinearGradient: /versions/unversioned/sdk/linear-gradient.html
     Location: /versions/unversioned/sdk/location.html
     Lottie: /versions/unversioned/sdk/lottie.html
+    Magnetometer: /versions/unversioned/sdk/magnetometer.html
     MapView: /versions/unversioned/sdk/map-view.html
     Notifications: /versions/unversioned/sdk/notifications.html
+    Payments: /versions/unversioned/sdk/payments.html
     Pedometer: /versions/unversioned/sdk/pedometer.html
     Permissions: /versions/unversioned/sdk/permissions.html
     registerRootComponent: /versions/unversioned/sdk/register-root-component.html
     ScreenOrientation: /versions/unversioned/sdk/screen-orientation.html
+    SecureStore: /versions/unversioned/sdk/securestore.html
     Segment: /versions/unversioned/sdk/segment.html
     Speech: /versions/unversioned/sdk/speech.html
     SQLite: /versions/unversioned/sdk/sqlite.html
