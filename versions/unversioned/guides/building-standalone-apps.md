@@ -93,6 +93,10 @@ This will take a few minutes, you can check up on it by running `exp build:statu
 -   **To run it on your Android device**, make sure you have the Android platform tools installed along with `adb`, then just run `adb install app-filename.apk` with your device plugged in.
 -   **To run it on your iOS device**, you will need to put in a bit more work :( We are working on producing simulator builds to make it easier to test, but for now you will need to use Apple TestFlight. Go to iTunes connect and create a new app and pick your bundle identifier. After that, I recommend using [pilot](https://github.com/fastlane/fastlane/tree/master/pilot) to upload the build and add testers.
 
+## 5.5 - Uploading your iOS IPA to TestFlight
+
+- Once your IPA is ready, copy and paste the link in your browser to download it. From here, you will need to use Application Loader or Xcode to upload your build.
+
 ## 6. Submit it to the appropriate store
 
 We don't automate this step (yet), but at this point you should be able to follow the Apple and Google documentation to submit your standalone binary to each respective store.
