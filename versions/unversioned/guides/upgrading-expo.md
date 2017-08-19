@@ -15,7 +15,7 @@ We post our release notes to [Exposition](https://blog.expo.io/), for example th
 
 If you are running ExpoKit inside a native project, upgrading will require extra steps. ExpoKit is currently an alpha feature and upgrading difficulty will vary between versions, but there is some information [here](expokit.html#upgrading-expokit).
 
-## Past Releases
+## Past Release Guides
 
 - [20.0.0](https://blog.expo.io/expo-sdk-v20-0-0-is-now-available-79f84232a9d1)
 - [19.0.0](https://blog.expo.io/expo-sdk-v19-0-0-is-now-available-821a62b58d3d)
