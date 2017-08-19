@@ -23,3 +23,6 @@ If you are running ExpoKit inside a native project, upgrading will require extra
 - [17.0.0](https://blog.expo.io/expo-sdk-v17-0-0-is-now-available-2c4f13362816)
 - [16.0.0](https://blog.expo.io/expo-sdk-v16-0-0-is-now-available-2151d555a580)
 - [15.0.0](https://blog.expo.io/expo-sdk-v15-0-0-is-now-available-2132538fd4fb)
+- [14.0.0](https://blog.expo.io/exponent-sdk-v14-0-0-is-now-available-114def29f796)
+- [13.0.0](https://blog.expo.io/exponent-sdk-v13-0-0-is-now-available-77d6b193a3ef)
+- [12.0.0](https://blog.expo.io/exponent-sdk-v12-0-0-is-now-available-8030e9433e7a)
