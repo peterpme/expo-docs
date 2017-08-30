@@ -100,7 +100,7 @@ This will take a few minutes, you can check up on it by running `exp build:statu
 
 - Once your IPA is ready and you've downloaded the file locally, you are ready to upload your app to TestFlight. Within TestFlight, click the plus icon and create a New App. Make sure your `bundleIdentifier` matches what you've placed in `exp.json`.
 
-> **Note:** You will not see your build here just yet! You will need to use Xcode or AppLoader to upload your IPA first. Once you do that, you can check the status of your build under `Activity`. Processing an app can take 10-15 minutes before it shows up under available builds.
+> **Note:** You will not see your build here just yet! You will need to use Xcode or Application Loader to upload your IPA first. Once you do that, you can check the status of your build under `Activity`. Processing an app can take 10-15 minutes before it shows up under available builds.
 
 ## 6. Submit it to the appropriate store
 
