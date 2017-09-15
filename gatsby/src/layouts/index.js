@@ -280,7 +280,6 @@ class Wrapper extends React.Component {
               display: `none`,
             },
           }}>
-
           <Link to={`/versions/${this.state.activeVersion}/index.html`}>
             <img
               src={logoText}
@@ -297,7 +296,6 @@ class Wrapper extends React.Component {
             onClick={() => this.setState({ sidebarOpen: true })}
             value="Menu"
           />
-
         </nav>
       </div>
     );

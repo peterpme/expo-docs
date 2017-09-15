@@ -2,13 +2,44 @@
 title: Payments
 ---
 
-Expo includes support for payments through [Stripe](https://stripe.com/) and [Apple Pay](https://www.apple.com/apple-pay/) on iOS.
+Expo includes support for payments through [Stripe](https://stripe.com/) and [Apple Pay](https://www.apple.com/apple-pay/) on iOS via ExpoKit, and Stripe and Android Pay on Android.
 
 Need more help than what's on the page? The Payments module is largely based off [tipsi-stripe](https://github.com/tipsi/tipsi-stripe). The documentation and questions there may prove helpful.
 
-## Importing Payments
+## Setup
 
-The Payments SDK is currently in active development and currently exists on iOS. If you want to use payments with Stripe on Android, we recommend using the [Expo Stripe module](https://github.com/expo/stripe-expo).
+If you haven't done payments with Stripe before, create an account with [Stripe](https://dashboard.stripe.com/register). After getting the account set up, navigate to the [Stripe API dashboard](https://dashboard.stripe.com/account/apikeys). Here, you'll need to make a note of the Publishable key and Secret key listed.
+
+## Adding the Payments Module on iOS
+
+The Payments module is currently only supported through ExpoKit on iOS (to understand why, refer to [Why ExpoKit on iOS?](#why-expokit-on-ios?)).
+
+First, detach your Expo project using ExpoKit (refer to [Detach to ExpoKit]('../guides/detach.md') for more information). Then, navigate to and open `your-project-name/ios/Podfile`. Add "Payments" to your Podfile's subspecs. Example:
+
+```ruby
+
+...
+target 'your-project-name' do
+  pod 'ExpoKit',
+    :git => "https://github.com/expo/expo.git",
+    :subspecs => [
+      "Core",
+      "CPP", # Add a comma here!
+      "Payments" # Add this line here!
+    ]
+
+  pod 'React',
+  ...
+
+```
+
+Finally, make sure [CocoaPods](https://cocoapods.org/) is installed and run `pod install` in `your-project-name/ios`. This will add the Payments module files to your project and the corresponding dependencies.
+
+## Adding the Payments Module on Android
+
+The Payments module is included with the Expo bundle on Android. Skip ahead to [importing payments](#importing-payments).
+
+## Importing Payments
 
 The Payments SDK is in Alpha and currently lives under Expo's **DangerZone** namespace. You can import it like this:
 
@@ -16,10 +47,6 @@ The Payments SDK is in Alpha and currently lives under Expo's **DangerZone** nam
 import { DangerZone } from 'expo';
 const { Payments } = DangerZone;
 ```
-
-## Setup
-
-If you haven't done payments with Stripe before, create an account with [Stripe](https://dashboard.stripe.com/register). After getting the account set up, navigate to the [Stripe API dashboard](https://dashboard.stripe.com/account/apikeys). Here, you'll need to make a note of the Publishable key and Secret key listed.
 
 ## Using the Payments SDK
 
@@ -78,14 +105,14 @@ An object with the following keys:
   created: 1479236426,
   livemode: 0,
   card: {
-  cardId: 'card_19GCAQI5NuVQgnjeRZizG4U3',
+    cardId: 'card_19GCAQI5NuVQgnjeRZizG4U3',
     brand: 'Visa',
     funding: 'credit',
     last4: '4242',
     expMonth: 4,
     expYear: 2024,
     country: 'US',
-    name: 'Eugene Grissom',
+    name: 'Eugene Grissom',
     addressLine1: 'Green Street',
     addressLine2: '3380',
     addressCity: 'Nashville',
@@ -97,6 +124,8 @@ An object with the following keys:
 ```
 
 ### Generating a token with Apple Pay
+
+Remember: to use Apple Pay on a real device, you need to [set up apple pay first](#enabling-apple-pay-in-expokit).
 
 ### `openApplePaySetup()`
 
@@ -208,6 +237,80 @@ payments.completeApplePayRequestAsync()
 // payments.cancelApplePayRequestAsync()
 ```
 
+### Generating a token by launching a card form
+
+### `paymentRequestWithCardFormAsync(options) -> Promise`
+
+This promise launches a Card Form dialog and resolves to a token upon successful completion of the card form, and an error otherwise.
+
+##### `options`
+
+An object with the following keys:
+
+* `requiredBillingAddressFields` _String_ - The billing address fields the user must fill out when prompted for their payment details. Can be one of: `full`|`zip` or not specify to disable.
+* `prefilledInformation` _Object_ - You can set this property to pre-fill any information you’ve already collected from your user.
+* `managedAccountCurrency` _String_ - Required to be able to add the card to an account (in all other cases, this parameter is not used). [More info](https://stripe.com/docs/api#create_card_token-card-currency).
+* `smsAutofillDisabled` _Bool_ - When entering their payment information, users who have a saved card with Stripe will be prompted to autofill it by entering an SMS code. Set this property to `true` to disable this feature.
+* `theme` _Object_ - Can be used to visually style Stripe-provided UI.
+
+##### `prefilledInformation`
+
+An object with the following keys:
+
+* `email` _String_ - The user’s email address.
+* `phone` _String_ - The user’s phone number.
+* `billingAddress` _Object_ - The user’s billing address. When set, the add card form will be filled with this address.
+
+##### `billingAddress`
+
+An object with the following keys:
+
+* `name` _String_ - The user’s full name (e.g. "Jane Doe").
+* `line1` _String_ - The first line of the user’s street address (e.g. "123 Fake St").
+* `line2` _String_ - The apartment, floor number, etc of the user’s street address (e.g. "Apartment 1A").
+* `city` _String_ - The city in which the user resides (e.g. "San Francisco").
+* `state` _String_ - The state in which the user resides (e.g. "CA").
+* `postalCode` _String_ - The postal code in which the user resides (e.g. "90210").
+* `country` _String_ - The ISO country code of the address (e.g. "US").
+* `phone` _String_ - The phone number of the address (e.g. "8885551212").
+* `email` _String_ - The email of the address (e.g. "jane@doe.com").
+
+##### `theme`
+
+An object with the following keys:
+
+* `primaryBackgroundColor` _String_ - The primary background color of the theme.
+* `secondaryBackgroundColor` _String_ - The secondary background color of this theme.
+* `primaryForegroundColor` _String_ - The primary foreground color of this theme. This will be used as the text color for any important labels in a view with this theme (such as the text color for a text field that the user needs to fill out).
+* `secondaryForegroundColor` _String_ - The secondary foreground color of this theme. This will be used as the text color for any supplementary labels in a view with this theme (such as the placeholder color for a text field that the user needs to fill out).
+* `accentColor` _String_ - The accent color of this theme - it will be used for any buttons and other elements on a view that are important to highlight.
+* `errorColor` _String_ - The error color of this theme - it will be used for rendering any error messages or view.
+
+#### Example
+
+```js
+const options = {
+  smsAutofillDisabled: true,
+  requiredBillingAddressFields: 'full',
+  prefilledInformation: {
+    billingAddress: {
+      name: 'Gunilla Haugeh',
+      line1: 'Canary Place',
+      line2: '3',
+      city: 'Macon',
+      state: 'Georgia',
+      country: 'US',
+      postalCode: '31217',
+    },
+  },
+}
+
+const token = await Payments.paymentRequestWithCardFormAsync(options)
+
+// Client specific code
+// api.sendTokenToBackend(token)
+```
+
 ### Generating a token with a custom card form
 
 It's also possible to generate a token by simply passing the necessary details in a parameter.
@@ -262,26 +365,15 @@ const token = await stripe.createTokenWithCardAsync(params)
 // api.sendTokenToBackend(token)
 ```
 
-## Enabling Apple Pay in Standalone Applications
+## Enabling Apple Pay in ExpoKit
 
-If you want to use Apple Pay for payments in standalone Expo applications, you'll need an Apple merchant ID. Navigate to the [merchant ID section of the Apple developer portal](https://developer.apple.com/account/ios/identifier/merchant). Here, click the '+' on the top right to create a new merchant ID. Keep note of the identifier you choose to use here. Add the merchant ID to the iOS section of your app.json file, as shown below (make sure the merchant ID here matches the one you created in your Apple dev portal!):
+If you want to use Apple Pay for payments, you'll need to set up your merchant ID in XCode first. Note that you do not need to go through this process to use the Payments module - you can still process payments with Stripe without going through the steps in this section.
 
-```javascript
-{
-  "expo": {
-    "name": "my-payments-project",
-    "description": "A project that uses payments in Expo.",
-    "slug": "my-payments-project",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.my.bundleIdentifier",
-      "merchantId": "merchant.my.merchant.id"
-    }
-  }
-}
-```
+If you haven't already, set up an Apple Merchant ID via the [Apple Developer Portal](https://developer.apple.com/). Then, open the application in XCode and navigate to the capabilities tab. Enable Apple Pay and insert your merchant ID into the corresponding space.
 
-Finally, you'll want to include your merchant ID in the JavaScript code before publishing your standalone application. Adding a merchant ID here will disable Apple Pay in the Expo client application (Apple Pay will only work with your Apple Merchant ID in a standalone application). To allow your application to work in both the client and a standalone application, we recommend adding the code here when building the standalone application, but then removing it when publishing the application to Expo.
+![applepay](https://imgur.com/QcuhCn4)
+
+Finally, you'll want to include your merchant ID in the JavaScript code before publishing your standalone application. Change the initialization of payments to mimic the following:
 
 ```javascript
 payments.initialize({
@@ -291,3 +383,7 @@ payments.initialize({
 ```
 
 Note: Apple Pay can be used only for real world items (ex. appeal, car sharing, food) and not virtual goods. For more information about proper usage of Apple Pay, visit Apple's [Apple Pay guidelines](https://developer.apple.com/app-store/review/guidelines/#apple-pay) and [Acceptable Use](https://developer.apple.com/apple-pay/acceptable-use-guidelines-for-websites/).
+
+## Why ExpoKit on iOS?
+
+Expo previously included support for a native Payments API without ExpoKit. We learned that apple sometimes rejects apps which contain the Stripe SDK but don’t offer anything for sale. To help your App Review process go more smoothly, we’ve decided to remove the Stripe SDK and experimental Payments API from apps built with the Expo standalone builder. We’re still excited to give developers a way to let users pay for goods when they need to and we’ll announce ways to do so shortly.
